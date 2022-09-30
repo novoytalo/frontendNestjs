@@ -1,0 +1,15 @@
+version: "3"
+services:
+  front-ytalo:
+    build:
+      context: .
+      dockerfile: DockerFile.dev
+    ports:
+      - "3010:3000"
+    command: >
+      sh -c "npm install \
+             npm run dev" 
+    restart: always
+    volumes:
+      - .:/home/node/app
+  
