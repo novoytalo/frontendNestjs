@@ -1,0 +1,17 @@
+FROM node:16
+
+WORKDIR /home/node/app
+
+
+# COPY package.json package-lock.json ./
+
+
+
+
+COPY . .
+
+# RUN npm run build
+# COPY .next ./
+
+# ENTRYPOINT ["tail", "-f", "/dev/null"]
+

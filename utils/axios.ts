@@ -1,7 +1,7 @@
 const axios = require('axios');
-const api = process.env.NEST_PUBLIC_API
+// const api = process.env.NEXT_PUBLIC_API
 const callAxios = axios.create({
-  baseURL: api,
+  baseURL: process.env.NEXT_PUBLIC_API,
   timeout: 2000,
   // headers: {
   //   'Content-Type': 'application/json',
@@ -9,4 +9,14 @@ const callAxios = axios.create({
   // }
 });
 
+// callAxios.interceptors.request.use(async config => {
+//   // Declaramos um token manualmente para teste.
+//   const token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9";
+
+//   if (token) {
+//     callAxios.defaults.headers.authorization = `Bearer ${token}`;
+//   }
+
+//   return config;
+// });
 export default callAxios

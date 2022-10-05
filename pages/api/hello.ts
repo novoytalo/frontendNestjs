@@ -11,5 +11,5 @@ export default function handler(
 ) {
   const servidor2= process.env.NEST_PUBLIC_API
   // console.log(servidor2)
-  res.status(200).json({ name: 'John Doe' })
+  res.status(200).json({ name: 'John Doe2' })
 }
