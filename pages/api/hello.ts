@@ -9,7 +9,7 @@ export default function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-  const servidor2= process.env.NEST_PUBLIC_API
+  const servidor2= process.env.NEST_PRIVATE_API
   // console.log(servidor2)
   res.status(200).json({ name: 'John Doe2' })
 }

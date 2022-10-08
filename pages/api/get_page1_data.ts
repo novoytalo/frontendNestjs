@@ -32,7 +32,7 @@ export default async function handler( req:NextApiRequest, res: NextApiResponse)
             // const data = await axios.get('http://54.232.76.194:3000/grandetabela/interval_id/0/100')
   
            
-            const  data  = await axios.get(`${process.env.NEST_PUBLIC_API}/grandetabela/interval_id/0/100`)
+            const  data  = await axios.get(`${process.env.NEST_PRIVATE_API}/grandetabela/interval_id/0/100`)
             .then((resp:any)=>{
                 // console.log('reps dentro do try'+resp.data)
                 
