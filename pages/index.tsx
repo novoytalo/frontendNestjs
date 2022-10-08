@@ -33,6 +33,18 @@ ChartJS.register(
 import {Bar, Line, Scatter, Bubble} from "react-chartjs-2";
 // import Chart from 'chart.js/auto';
 
+interface DataGrandeTabela_Quantity {
+  id: number;
+  Order_Date: Date;
+  Quantity: number;
+
+}
+
+interface diaData {
+  
+}
+
+
 export function dataConversion (date:string){
   const newStringDate= date.split("/").reverse().join("/")
   // const dataConverted = new Date ('22/01/22')
@@ -40,19 +52,39 @@ export function dataConversion (date:string){
   return newStringDate
 }
 
+
+
 // export default function Home(props) {
-export default function Home(props:any) {
-// console.log('props'+[...props.data])
-//   const {data:extractProps}= props
-//   console.log('entrada do props'+extractProps)
-//   // const {data:data2} = props
-//   // console.log(data2)
-//   // data2.map(value=>console.log('id: '+value.userId))
+export default function Home( props:any) {
+  const dataBuysById:DataGrandeTabela_Quantity[] = props.data
+  dataBuysById.map(value => console.log(value.id))
+  console.log('props: ',props.data)
+  
+  // const [stateData, setstateData]=useState(true)
+  //  const [stateData, setstateData]=useState(true)
+  //  setstateData
+  // useEffect(() => {
+    
+  // }, [stateData])
+  
 
-//   const inicialState=[{}]
-//   const [data,setData]=useState(inicialState)
-
-//   // useEffect()
+  // const inicialState=[
+  //   {
+  //     id: 1,
+  //     Order_Date: new Date ('2014/01/03'),
+  //     Quantity: 2
+  //   },
+  //   {
+  //     id: 2,
+  //     Order_Date: new Date ('2014/01/04'),
+  //     Quantity: "3"
+  //   }
+  // ]
+  // if (dataBuysById=== null || dataBuysById = undefined={}){
+  //   dataBuysById
+  // }
+  
+  // useEffect()
 
   
 //   // const {data, error}=useSWR('https://jsonplaceholder.typicode.com/todos', fetcher, {
@@ -100,66 +132,92 @@ export default function Home(props:any) {
 //   ],
 //  };
 
+// const dataDate = dataBuysById.map((value)=>value.Order_Date )
+const dataExtractXY = dataBuysById.map((value)=>({x:value.Order_Date, y:value.Quantity}) )
+// console.log('XYdata: ',dataExtractXY)
 
-//  const dataChart={
-//   labels:["2012/01/01", "2012/01/02","2012/01/04", "2012/01/05", "2012/01/10", "2012/01/15","2012/01/20","2012/01/21","2012/01/22",],
-//   // labels:[...dataDate],
-//   datasets:[
-//     {
-//       label: 'Prophet',
-//       data:[{x: '2012/01/01', y: 1 }, {x:'2012/01/15',y:0.4}, {x:'2012/01/20',y:0.2}],
-//       // labels:["January", "February","March", "April", "May", "May"],
-//       fill: false,
-//       borderColor: 'rgb(75,192,192)',
-//       tension:0.1,
+// cut repeated data
+
+
+
+const sumEqualDataExtractXY:{
+  x: Date;
+  y: number;
+}[] = Object.values(dataExtractXY.reduce((r:any, o:any) => {
+  r[(o.x)] = r[o.x] || {x: o.x, y : 0};
+  r[o.x].y += +o.y;
+  return r;
+},{}));
+
+const valuesEspt = sumEqualDataExtractXY.map((value)=>({x:new Date(value.x), y:value.y}))
+const dataDate = valuesEspt.map((value)=>value.y)
+const dataSet2= sumEqualDataExtractXY.map((value)=>({x:new Date(value.x), y:value.y/2}))
+console.log(valuesEspt)
+
+ const dataChart={
+  
+  // labels:["2012/01/01", "2012/01/02","2012/01/04", "2012/01/05", "2012/01/10", "2012/01/15","2012/01/20","2012/01/21","2012/01/22"],
+  labels:[...dataDate],
+  datasets:[
+    {
+      label: 'Prophet',
+      // data:[{x: '2012/01/01', y: 1 }, {x:'2012/01/15',y:0.4}, {x:'2012/01/20',y:0.2}],
+      data: valuesEspt,
+      // labels:["January", "February","March", "April", "May", "May"],
+      // fill: false,
+      borderColor: 'rgb(75,192,192)',
+      tension:0.1,
  
-//     },
-//     {
-//       label:'Data Original',
+    },
+    {
+      label:'Data Original',
       
-//       data:[0.1, 0.2, 0.3, 0.4, 0.7, 0.7,0.9,0.10],
-//       fill: false,
-//       borderColor: 'rgb(20,100,150)',
-//       tension:0.1,
-//       // backgoundColor: "rgba(47,97,68, 0.3)",
-//     },
-//   ],
-//  };
+      // data:[0.1, 0.2, 0.3, 0.4, 0.7, 0.7,0.9,0.10],
+      data: dataSet2,
+      
+      // fill: false,
+      borderColor: 'rgb(20,100,150)',
+      tension:0.1,
+      // backgoundColor: "rgba(47,97,68, 0.3)",
+    },
+  ],
+ };
 
-//  const option ={
-//     plugin:{
-//       legend:{
-//         display: false,
-//       },
-//     },
-//     ///
-//     element:{
-//       line:{
-//         tension:0,
-//         borderWidth: 2,
-//         borderColor: "rgba(47,97,68,1)",
-//         fill: "start",
-//         backgoundColor: "rgba(47,97,68, 0.3)",
-//       },
-//       point:{
-//         radius: 0,
-//         hitRadius: 0,
-//       },
-//     },
-//     ///
-//     scales:{
-//       xAxis:{
-//         offset:true,
-//         // type: "time",      
-//       },
+ const option ={
+    plugin:{
+      legend:{
+        display: false,
+      },
+    },
+    ///
+    element:{
+      line:{
+        tension:0,
+        borderWidth: 2,
+        borderColor: "rgba(47,97,68,1)",
+        fill: "start",
+        backgoundColor: "rgba(47,97,68, 0.3)",
+      },
+      point:{
+        radius: 0,
+        hitRadius: 0,
+      },
+    },
+    ///
+    scales:{
+      xAxis:{
+        offset:true,
+        // type: "time",      
+      },
         
-//         // display: false,
+        // display: false,
       
-//       yAxis:{
-//         // display: false,
-//       },
-//     },
-//  };s
+      yAxis:{
+        // display: false,
+      },
+    },
+ };
+ 
 
   return (
     <main className='d-flex flex-column min-vh-100'>
@@ -168,8 +226,10 @@ export default function Home(props:any) {
         <meta name='description' content='Generated by create next app' />
         <link rel='icon' href='/favicon.ico' />
       </Head>
+      <h1>THIS GIT IS FOR TESTING, FOR NOW!!! </h1>
       
-
+      {dataBuysById&&<h2>Server On</h2>}
+      {(dataBuysById==null||dataBuysById==undefined)&&<h2>Server OFF</h2>}
       <div className='px-4 py-5 my-5 text-center flex-grow-1'>
         <h1 className='display-5 fw-bold'>Next.js + Bootstrap 22❤️</h1>
         <div className='col-lg-6 mx-auto'>
@@ -181,10 +241,12 @@ export default function Home(props:any) {
           </p>
           {/* chart */}
           <div>
-            {/* <Line data={dataChart} width={100} height={100} options={option} ></Line> */}
+            <Line data={dataChart} width={100} height={100} options={option} ></Line>
           </div>
           <div>
-            {/* {extractProps.map((value:any)=> <div key={value.id}>{value.Quantity}</div>)} */}
+
+            {/* {props.map((value)=> <div key={value.id}>{value.Quantity}</div>)} */}
+            {/* {props.data.map((value:any)=> <div key={value.id}>{value.title}</div>)} */}
           </div>
           <div className='d-grid gap-2 d-sm-flex justify-content-sm-center'>
             <button type='button' className='btn btn-primary btn-lg px-4 gap-3'>
@@ -205,20 +267,22 @@ export default function Home(props:any) {
 }
 
 export async function getServerSideProps() {
-  const server = process.env.NEST_PUBLIC_API
+  // const server = process.env.NEST_PUBLIC_API
   // const data = await callAxios.get('https://jsonplaceholder.typicode.com/todos')
-   const data = await callAxios.get('/api/get_page1_data')
+   const data = await callAxios.get('/api/get_page1_data', {timeout: 10000})
    .then((resp:any)=>{  
     // console.log('resposta api'+resp.data)
     // const dataConcat = [...resp.data]
-    console.log('no front resposta recebida'+resp)
-    return resp.data
+    // console.log('no front resposta recebida'+resp[0])
+    // console.log(resp)
+    // console.log(typeof(resp))
+    return [...resp.data]
   }
    ).catch((reserror:any)=>console.log(reserror))
-
+  // console.log('saída ',data)
   return {
     props: {
-      // data,
+      data,
     },
   };
 

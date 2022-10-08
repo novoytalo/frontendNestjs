@@ -8,12 +8,15 @@ export default function Pgtest(props:any) {
 //       console.log(data)
 //     }
 //   })
-  useSWR('http://localhost:8080/grandetabela/', fetcher, {
+  // useSWR('http://localhost:8080/grandetabela/', fetcher, {
+    console.log('nest api: '+process.env.NEXT_PUBLIC_API)
+    useSWR(`${process.env.NEST_PUBLIC_API}/grandetabela/interval_id/0/100`, fetcher, {
     onSuccess:(data,key,config)=>{
     //   setData(data)
-      console.log(data)
+      console.log([...data])
     }
   })
+  
 return (
     <div>Teste Pag</div>
 )

@@ -1,7 +1,7 @@
 const axios = require('axios');
-// const api = process.env.NEXT_PUBLIC_API
+// const api = process.env.NEST_PUBLIC_API
 const callAxios = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API,
+  baseURL: 'http://localhost:3010',
   timeout: 2000,
   // headers: {
   //   'Content-Type': 'application/json',
