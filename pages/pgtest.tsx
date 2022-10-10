@@ -9,13 +9,13 @@ export default function Pgtest(props:any) {
 //     }
 //   })
   // useSWR('http://localhost:8080/grandetabela/', fetcher, {
-    console.log('nest api: '+process.env.NEXT_PRIVATE_API)
-    useSWR(`${process.env.NEST_PRIVATE_API}/grandetabela/interval_id/0/100`, fetcher, {
-    onSuccess:(data,key,config)=>{
-    //   setData(data)
-      console.log([...data])
-    }
-  })
+  //   console.log('nest api: '+process.env.NEXT_PRIVATE_API)
+  //   useSWR(`${process.env.NEST_PRIVATE_API}/grandetabela/interval_id/0/100`, fetcher, {
+  //   onSuccess:(data,key,config)=>{
+  //   //   setData(data)
+  //     console.log([...data])
+  //   }
+  // })
   
 return (
     <div>Teste Pag</div>

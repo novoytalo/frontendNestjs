@@ -1,9 +1,15 @@
-
+//to sove problems types 
+//yarn add --dev @types/react
 import Head from 'next/head';
 import useSWR from 'swr';
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import  callAxios  from '../utils/axios';
+//datapicker
+// import "react-datepicker/dist/react-datepicker.css";
+
+
+import "react-datepicker/dist/react-datepicker.css";
 const fetcher = (url: string) => fetch(url).then((res)=>res.json())
 //chart imports
 import {
@@ -31,6 +37,7 @@ ChartJS.register(
 );
 
 import {Bar, Line, Scatter, Bubble} from "react-chartjs-2";
+import Datapicker from './components/Datapicker';
 // import Chart from 'chart.js/auto';
 
 interface DataGrandeTabela_Quantity {
@@ -40,103 +47,104 @@ interface DataGrandeTabela_Quantity {
 
 }
 
-interface diaData {
-  
-}
 
 
-export function dataConversion (date:string){
-  const newStringDate= date.split("/").reverse().join("/")
-  // const dataConverted = new Date ('22/01/22')
-  //  const dataConverted = typeof(newStringDate)
-  return newStringDate
-}
+// export function dataConversion (date:string){
+//   const newStringDate= date.split("/").reverse().join("/")
+//   // const dataConverted = new Date ('22/01/22')
+//   //  const dataConverted = typeof(newStringDate)
+//   return newStringDate
+// }
 
+//if you need to sove cors problem 
+// const optionsAxios ={
+//   // method: 'GET',
+//   // mode: 'no-cors',
+//   headers: {
+//     'Access-Control-Allow-Origin': '*',
+//     'Content-Type': 'application/json',
+//   },
+//   timeout: 30000,
+//   // withCredentials: true,
+//   // credentials: 'same-origin',
+// }
 
 
 // export default function Home(props) {
-export default function Home( props:any) {
-  const dataBuysById:DataGrandeTabela_Quantity[] = props.data
-  dataBuysById.map(value => console.log(value.id))
-  console.log('props: ',props.data)
+export default function Home( props:DataGrandeTabela_Quantity[]) {
+  //all axios
   
-  // const [stateData, setstateData]=useState(true)
-  //  const [stateData, setstateData]=useState(true)
-  //  setstateData
-  // useEffect(() => {
+  const [propsvalues, setPropsvalues ] = useState(
+
+    [{id:1,Order_Date:new Date ("2014/01/03"),Quantity:2},{id:2,Order_Date:new Date ("2014/01/04"),Quantity:3}]
+  )
+  const [propsvaluesBydate, setPropsvaluesBydate ] = useState(
+
+    [{id:1,Order_Date:new Date ("2014/01/03"),Quantity:2},{id:2,Order_Date:new Date ("2014/01/04"),Quantity:3}]
+  )
+
+  // depends on the strateg
+  // let endpoints = [
+  //   '/api/get_page1_data',
+  //   '/api/prophet',
+   
+  // ];
+  
+  // axios.all(endpoints.map((endpoint) => axios.get(endpoint))).then(
+  //   axios.spread((user, repos) => {
+  //     console.log({ user, repos });
+  //   })
+  // );
+
+ 
+ const [getIdsIntervalData, setgetIdsIntervalData] = useState({pinitialPag:0, finalPag2:200})
+//  function passDrilling (idsObject:any) {
+//    setgetIdsIntervalData(idsObject)
+//  }
+  // axios.post(url, data, {headers : {'X-Requested-With': 'XMLHttpRequest'} })
+  async function callProps () {
+    //on develop... localy use localhost.
+    const response = await axios.post(`http://localhost:3010/api/bddata/interval_id`,getIdsIntervalData, {timeout: 10000 }).then((resp:any)=>{setPropsvalues(resp.data); console.log(resp.data)})
     
-  // }, [stateData])
+    //in vercel deploy use direct path
+    // const response = await axios.get('/api/get_page1_data', optionsAxios).then((resp:any)=>{setPropsvalues(resp.data); console.log(resp.data)})
+    //vercel
+    // const response = await axios.get('/api/get_page1_data').then((resp:any)=>{setPropsvalues(resp.data); console.log(resp.data)})
+  }
+
+  const [getIntervalDate, setgetIntervalDate] = useState({interval_date_start:(new Date()).toISOString(), interval_date_end:(new Date()).toISOString()})
+  async function callPropsByDateInterval () {
+    //on develop... localy use localhost.
+    const response = await axios.post('http://localhost:3010/api/bddata/bydateinterval',getIntervalDate ,{timeout: 10000}).then((resp:any)=>{setPropsvalues(resp.data); console.log(resp.data)})
+    //in vercel deploy use direct path
+    // const response = await axios.get('/api/get_page1_data', optionsAxios).then((resp:any)=>{setPropsvalues(resp.data); console.log(resp.data)})
+    // const response = await axios.post('/api/get_page1_data').then((resp:any)=>{setPropsvalues(resp.data); console.log(resp.data)})
+  }
   
-
-  // const inicialState=[
-  //   {
-  //     id: 1,
-  //     Order_Date: new Date ('2014/01/03'),
-  //     Quantity: 2
-  //   },
-  //   {
-  //     id: 2,
-  //     Order_Date: new Date ('2014/01/04'),
-  //     Quantity: "3"
-  //   }
-  // ]
-  // if (dataBuysById=== null || dataBuysById = undefined={}){
-  //   dataBuysById
-  // }
   
-  // useEffect()
-
-  
-//   // const {data, error}=useSWR('https://jsonplaceholder.typicode.com/todos', fetcher, {
-//   // useSWR('https://jsonplaceholder.typicode.com/todos', fetcher, {
-//   //   onSuccess:(data,key,config)=>{
-//   //     setData(data)
-//   //     // console.log(data)
-//   //   }
-//   // })
-
-//   // NEST_PUBLIC_API
-
-
-//   //server query backend. Return a list A
-
-//   //Get on Prophet backend. Take the list A an return a list B.
-//   //repted values need to go!
+  // console.log ('props chegada: ',props)
+  useEffect(() => {
+    // callprops
+    
+    console.log(propsvalues)
  
-//   const dataGraficValues = extractProps.map((value:any)=>value.Quantity)
-//   const dataDate = extractProps.map((value:any)=>dataConversion(value.Order_Date) )
-//   // const dataGrafic = [...extractProps.values("Quantity")]
-//   console.log('dataDate2'+dataDate)
-//  const dataChart={
-//   // labels:["January", "February","March", "April", "May", "May"],
-//   labels:[...dataDate],
-//   datasets:[
-//     {
-//       label: 'Prophet',
-//       data:[{x: '14-06-01', y: 1 }, {x:'14-06-01',y:0.4}, {x:'14-06-01',y:0.2}],
-//       // labels:["January", "February","March", "April", "May", "May"],
-//       fill: false,
-//       borderColor: 'rgb(75,192,192)',
-//       tension:0.1,
- 
-//     },
-//     {
-//       label:'Data Original',
-      
-//       data:[...dataGraficValues],
-//       fill: false,
-//       borderColor: 'rgb(20,100,150)',
-//       tension:0.1,
-//       // backgoundColor: "rgba(47,97,68, 0.3)",
-//     },
-//   ],
-//  };
+  }, [propsvalues])
+  
+  // const dataBuysById2:DataGrandeTabela_Quantity[] = props
+  const dataBuysById2:DataGrandeTabela_Quantity[] = propsvalues
+  
+  console.log('props pos type: ',dataBuysById2)
+  console.log('tipo de quantity: ', typeof(dataBuysById2[0].Quantity))
+  // NOTE TRY TO CHANGE ON SERVER SIDE THE QUANTITY TYPE TO NUMBER...
+  const dataBuysById = dataBuysById2.map((value)=>({id: value.id, Order_Date:value.Order_Date, Quantity: Number(value.Quantity) }))
+   console.log('tipo de quantity: ', typeof(dataBuysById[0].Quantity))
+  console.log('props pos type: ',dataBuysById)
 
-// const dataDate = dataBuysById.map((value)=>value.Order_Date )
+
 const dataExtractXY = dataBuysById.map((value)=>({x:value.Order_Date, y:value.Quantity}) )
-// console.log('XYdata: ',dataExtractXY)
+console.log('XYdata: ',dataExtractXY)
 
-// cut repeated data
+// // cut repeated data
 
 
 
@@ -144,20 +152,20 @@ const sumEqualDataExtractXY:{
   x: Date;
   y: number;
 }[] = Object.values(dataExtractXY.reduce((r:any, o:any) => {
-  r[(o.x)] = r[o.x] || {x: o.x, y : 0};
+  r[o.x] = r[o.x] || {x: o.x, y : 0};
   r[o.x].y += +o.y;
   return r;
 },{}));
 
-const valuesEspt = sumEqualDataExtractXY.map((value)=>({x:new Date(value.x), y:value.y}))
-const dataDate = valuesEspt.map((value)=>value.y)
-const dataSet2= sumEqualDataExtractXY.map((value)=>({x:new Date(value.x), y:value.y/2}))
-console.log(valuesEspt)
+const valuesEspt = sumEqualDataExtractXY.map((value)=>({x:(value.x), y:value.y}))
+const dataDate = valuesEspt.map((value)=>value.x)
+const dataSet2= sumEqualDataExtractXY.map((value)=>({x:(value.x), y:value.y/2}))
+console.log('bruttooo2: ',valuesEspt)
 
  const dataChart={
   
   // labels:["2012/01/01", "2012/01/02","2012/01/04", "2012/01/05", "2012/01/10", "2012/01/15","2012/01/20","2012/01/21","2012/01/22"],
-  labels:[...dataDate],
+  labels: dataDate,
   datasets:[
     {
       label: 'Prophet',
@@ -228,8 +236,8 @@ console.log(valuesEspt)
       </Head>
       <h1>THIS GIT IS FOR TESTING, FOR NOW!!! </h1>
       
-      {dataBuysById&&<h2>Server On</h2>}
-      {(dataBuysById==null||dataBuysById==undefined)&&<h2>Server OFF</h2>}
+      {/* {dataBuysById&&<h2>Server On</h2>}
+      {(dataBuysById==null||dataBuysById==undefined)&&<h2>Server OFF</h2>} */}
       <div className='px-4 py-5 my-5 text-center flex-grow-1'>
         <h1 className='display-5 fw-bold'>Next.js + Bootstrap 22❤️</h1>
         <div className='col-lg-6 mx-auto'>
@@ -240,11 +248,17 @@ console.log(valuesEspt)
             extensive prebuilt components, and powerful JavaScript plugins.
           </p>
           {/* chart */}
+          {/* <div>{propsvalues.map((value)=> <div key={value.id}>{value.Quantity}</div>)}</div> */}
+          <Datapicker setgetIntervalDate={setgetIntervalDate}  />
           <div>
             <Line data={dataChart} width={100} height={100} options={option} ></Line>
           </div>
+          <button type='button' className='btn btn-primary btn-lg px-4 gap-3' onClick={()=>{callProps()}}>Atualizar</button>
           <div>
-
+          </div>
+          <button type='button' className='btn btn-primary btn-lg px-4 gap-3' onClick={()=>{callPropsByDateInterval()}}>Atualizar By Date</button>
+          <div>
+          <input type="range" className="form-range" id="customRange1" />
             {/* {props.map((value)=> <div key={value.id}>{value.Quantity}</div>)} */}
             {/* {props.data.map((value:any)=> <div key={value.id}>{value.title}</div>)} */}
           </div>
@@ -266,26 +280,26 @@ console.log(valuesEspt)
   );
 }
 
-export async function getServerSideProps() {
-  // const server = process.env.NEST_PUBLIC_API
-  // const data = await callAxios.get('https://jsonplaceholder.typicode.com/todos')
-   const data = await callAxios.get('/api/get_page1_data', {timeout: 10000})
-   .then((resp:any)=>{  
-    // console.log('resposta api'+resp.data)
-    // const dataConcat = [...resp.data]
-    // console.log('no front resposta recebida'+resp[0])
-    // console.log(resp)
-    // console.log(typeof(resp))
-    return [...resp.data]
-  }
-   ).catch((reserror:any)=>console.log(reserror))
-  // console.log('saída ',data)
-  return {
-    props: {
-      data,
-    },
-  };
 
-}
+
+// function callprops() {
+//   throw new Error('Function not implemented.');
+// }
+//on develop have no problem... in versel, call in build time getServerSideProps inside api on the same site cause error 500
+//solution call as function or call direct server or on body 
+// export async function getServerSideProps() {
+  
+//   // const server = process.env.NEST_PUBLIC_API
+//   // const data = await callAxios.get('https://jsonplaceholder.typicode.com/todos')
+//    const response = await axios.get('/api/get_page1_data', {timeout: 2})
+
+//   const valeutoprops = await response.data
+//   return {
+//     props: {
+//       server: response.data,
+//     },
+//   };
+
+// }
 
 
