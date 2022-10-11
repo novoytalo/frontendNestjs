@@ -5,7 +5,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import callAxios from "../../../utils/axios";
 
 // solution for "CORS" issue to nextjs: https://stackoverflow.com/questions/65058598/nextjs-cors-issue
-export default async function handlerdate( req:NextApiRequest, res: NextApiResponse) {
+export default async function handlerprophet( req:NextApiRequest, res: NextApiResponse) {
 
 
     const body =req.body
@@ -31,12 +31,12 @@ export default async function handlerdate( req:NextApiRequest, res: NextApiRespo
 
         try {
             let data = JSON.stringify({
-                interval_date_start: body.interval_date_start,
-                interval_date_end: body.interval_date_end
+                Order_Date: body.valuesEspt.x,
+                Quantity: body.valuesEspt.y
             })
-          
-            req.body
-            const  response  = await axios.post(`${process.env.NEST_PRIVATE_API}/grandetabela/interval_date`, data, {
+            console.log('body api prophet',body.horizon,body.valuesEspt.x,body.valuesEspt.y)
+            const horizon=req.body.horizon
+            const  response  = await axios.post(`${process.env.NEST_PRIVATE_PROPHET}/forecast_json/${horizon}`, data, {
                 headers: {
                     'Content-Type': 'application/json',
                 }

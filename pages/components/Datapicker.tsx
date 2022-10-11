@@ -25,6 +25,11 @@ const displayFormat= 'yyyy/mm/dd'
 const [dateRange, setDateRange] = useState<[null|Date,null|Date]>([new Date(),new Date()]);
 const [startDate, endDate] = dateRange;
 
+// if(dateRange[0]!==null&&dateRange[1]!==null){
+//   // pinitialPag:0, finalPag2:200
+//   setgetIntervalDate({interval_date_start:dateRange[0],interval_date_end:dateRange[1]})
+// }
+
 
 // const yearRange= Array.from(new Array(50), (x, i) => i+2000)
 // const [startDate, setStartDate] = useState(new Date());
@@ -55,26 +60,7 @@ const [startDate, endDate] = dateRange;
 // const [getday, setGetDay] = useState(new Date().getMonth())
 // const [completeDate, setCompleteDate] = useState<Date | null>(new Date())
   return(
-    //showTimeSelect
-    //monthsShown={2}
 
-    // const [dateRange, setDateRange] = useState([null, null]);
-    // const [startDate, endDate] = dateRange;
-    // return (
-    //   <DatePicker
-    //     selectsRange={true}
-    //     startDate={startDate}
-    //     endDate={endDate}
-    //     onChange={(update) => {
-    //       setDateRange(update);
-    //     }}
-    //     isClearable={true}
-    //   />
-    // );
-
-
-
-    // <div>
 
 <div>
    <DatePicker
@@ -107,9 +93,8 @@ const [startDate, endDate] = dateRange;
       }}
       // withPortal
       // popperPlacement='top'
-
     />
-</div>
 
-  )
+</div>
+  );
 }

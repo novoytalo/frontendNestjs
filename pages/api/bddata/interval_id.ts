@@ -5,7 +5,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import callAxios from "../../../utils/axios";
 
 // solution for "CORS" issue to nextjs: https://stackoverflow.com/questions/65058598/nextjs-cors-issue
-export default async function handler( req:NextApiRequest, res: NextApiResponse) {
+export default async function handlerids( req:NextApiRequest, res: NextApiResponse) {
     const body =req.body
    
     // const { id, id2 } = req.query
@@ -58,7 +58,7 @@ export default async function handler( req:NextApiRequest, res: NextApiResponse)
 
 
             const  response  = await axios.get(`${process.env.NEST_PRIVATE_API}/grandetabela/interval_id/${body.pinitialPag}/${body.finalPag2}`)
-  
+            
             res.status(200).json(response.data)
            
         } catch (error) {
