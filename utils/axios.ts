@@ -3,7 +3,7 @@ const axios = require('axios');
 // const api = process.env.NEST_PUBLIC_API
 const callAxios = axios.create({
   baseURL: 'http://localhost:3010',
-  timeout: 2000,
+  timeout: 20000,
   // headers: {
   //   'Content-Type': 'application/json',
   //   //'Authorization': 'token <your-token-here> -- https://docs.GitHub.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token'

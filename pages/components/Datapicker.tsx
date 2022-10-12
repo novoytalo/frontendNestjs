@@ -4,9 +4,10 @@ import DatePicker from "react-datepicker";
 
 type drill ={
   setgetIntervalDate: any;
+  getIntervalDate:any;
 }
 
-export default function Datapicker ({setgetIntervalDate}:drill) {
+export default function Datapicker ({setgetIntervalDate, getIntervalDate}:drill) {
   
   // const [startDate, setStartDate] = useState(new Date());
   // const [endDate, setEndDate] = useState(new Date());
@@ -22,8 +23,10 @@ export default function Datapicker ({setgetIntervalDate}:drill) {
 const placeholder = 'place holder'
 const displayFormat= 'yyyy/mm/dd'
 // const startDateId = true
-const [dateRange, setDateRange] = useState<[null|Date,null|Date]>([new Date(),new Date()]);
-const [startDate, endDate] = dateRange;
+// const [dateRange, setDateRange] = useState<[null|Date,null|Date]>([new Date(),new Date()]);
+const [dateRangeStart, setDateRangeStart] = useState<null|Date>(new Date());
+const [dateRangeFinish, setDateRangeFinish] = useState<null|Date>(new Date());
+const [startDate, endDate] = [dateRangeStart, dateRangeFinish];
 
 // if(dateRange[0]!==null&&dateRange[1]!==null){
 //   // pinitialPag:0, finalPag2:200
@@ -63,7 +66,7 @@ const [startDate, endDate] = dateRange;
 
 
 <div>
-   <DatePicker
+   {/* <DatePicker
       selectsRange={true}
       
       startDate={startDate}
@@ -85,15 +88,48 @@ const [startDate, endDate] = dateRange;
             value.toISOString();
             setDateRange(update);
            };
-            if(dateRange[0]!==null&&dateRange[1]!==null){
+            if(startDate!==null&&endDate!==null){
               // pinitialPag:0, finalPag2:200
               setgetIntervalDate({interval_date_start:dateRange[0],interval_date_end:dateRange[1]})
             }
          })
       }}
-      // withPortal
-      // popperPlacement='top'
+ 
+    /> */}
+    <div>
+      Start
+       <DatePicker
+      selected={startDate}
+      onChange={(date) => {
+        setDateRangeStart(date);
+        if(date!==null)
+        setgetIntervalDate({interval_date_start:new Date(date).toISOString(),interval_date_end:getIntervalDate.interval_date_end});}}
+      peekNextMonth
+      showMonthDropdown
+      showYearDropdown
+      dateFormat="yyyy/MM/dd"
+      placeholderText="Select a date initial date"
+      dropdownMode="select"
     />
+    </div>
+    End
+    <div>
+     <DatePicker
+      selected={endDate}
+      onChange={(date) => {
+        setDateRangeFinish(date);
+        if(date!==null)
+        setgetIntervalDate({interval_date_start:getIntervalDate.interval_date_start,interval_date_end:new Date(date).toISOString()})
+      }}
+      peekNextMonth
+      showMonthDropdown
+      showYearDropdown
+      dateFormat="yyyy/MM/dd"
+      placeholderText="Select a final date"
+      dropdownMode="select"
+    />
+    </div>
+
 
 </div>
   );
