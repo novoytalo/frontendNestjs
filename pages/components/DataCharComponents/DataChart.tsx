@@ -39,6 +39,7 @@ import Datapicker from "../Datapicker";
 import condensedataFunction from "../../../utils/condensedata";
 import { getdatabyDateInterval, getdatabyid } from "./scripts/data_db";
 import prohetQuantytotalData from "./scripts/prophetdata/quantytotal";
+import dateConvertFunc from "../../../utils/dateConverter";
 // import Chart from 'chart.js/auto';
 
 interface DataGrandeTabela_Quantity {
@@ -167,13 +168,23 @@ console.log("XYdata: ", dataExtractXY);
 
 const dataBuysByIdProphet: DataGrandeTabela_Quantity_Prohet[] = propsvaluesprophetFinal;
 const dataExtractXYProphet = dataBuysByIdProphet.map((value) => ({
-  x: value.ds,
+  x:  dateConvertFunc(value.ds),
   y: value.yhat,
+}));
+const dataExtractXYProphetYhat_lower = dataBuysByIdProphet.map((value) => ({
+  x:  dateConvertFunc(value.ds),
+  y: value.yhat_lower,
+}));
+const dataExtractXYProphetYhat_upper = dataBuysByIdProphet.map((value) => ({
+  x:  dateConvertFunc(value.ds),
+  y: value.yhat_upper,
 }));
 const dataDatePro = dataBuysByIdProphet.map((value) => ({
   x: value.ds
   // y: value.yhat,
 }));
+
+const dataDateProExtractObject = dataDatePro.map(value => value.x)
 
 // console.log("props pos type: ", dataBuysByIdProphet);
 // console.log("tipo de quantity: ", typeof dataBuysByIdProphet[0].Quantity);
@@ -204,7 +215,7 @@ const dataDatePro = dataBuysByIdProphet.map((value) => ({
   // const lastDateReferenceForProphetlast=dataDate.at(-1)
  
 
-  const concatDates = [...dataDate, ...dataDatePro];
+  const concatDates = [...dataDate.map(value => dateConvertFunc(value)), ...dataDateProExtractObject.map(value=>dateConvertFunc(value))];
   let concatDateUniqueArray = concatDates
     // .map(function (date) {
     //   return date.getTime();
@@ -227,7 +238,7 @@ const soreUnicDateconcat = concatDateUniqueArray.sort()
     labels:soreUnicDateconcat,
     datasets: [
       {
-        label: "Prophet",
+        label: "Original Data",
         // data:[{x: '2012/01/01', y: 1 }, {x:'2012/01/15',y:0.4}, {x:'2012/01/20',y:0.2}],
         data: valuesEspt,
         // labels:["January", "February","March", "April", "May", "May"],
@@ -236,7 +247,7 @@ const soreUnicDateconcat = concatDateUniqueArray.sort()
         tension: 0.1,
       },
       {
-        label: "Data Original",
+        label: "Prophet",
 
         // data:[0.1, 0.2, 0.3, 0.4, 0.7, 0.7,0.9,0.10],
         // data: dataSet2,
@@ -247,7 +258,22 @@ const soreUnicDateconcat = concatDateUniqueArray.sort()
         tension: 0.1,
         // backgoundColor: "rgba(47,97,68, 0.3)",
       },
+      {
+        label: "Yhat_lower",
+        data:dataExtractXYProphetYhat_lower,
+        borderColor: "rgb(55,55,55,55)",
+        tension:0.1,
+
+      },
+      {
+        label: "Yhat_lower",
+        data:dataExtractXYProphetYhat_upper,
+        borderColor: "rgb(100,100,100,100)",
+        tension:0.1,
+
+      },
     ],
+
   };
 
   const option = {
