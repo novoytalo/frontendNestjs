@@ -1,13 +1,14 @@
 import axios from "axios";
-import condensedataFunction from "../../../../../utils/condensedata";
+import condensedataFunction from "../../utils/condensedata";
 
 interface prophetprops {
+
   getIntervalDateProphet: any;
   setpropsvaluesprophet: any;
   setpropsvaluesprophetToFit: any;
   propsvaluesprophetToFit: any;
   setpropsvaluesprophetFinal: any;
-  setPropsvalues:any;
+  // horizon:number;
 }
 
 export default async function prohetQuantytotalData({
@@ -16,7 +17,7 @@ export default async function prohetQuantytotalData({
   setpropsvaluesprophetToFit,
   propsvaluesprophetToFit,
   setpropsvaluesprophetFinal,
-  setPropsvalues,
+  // horizon,
 }: prophetprops) {
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // async function callPropsByDateInterval() {
@@ -38,13 +39,6 @@ export default async function prohetQuantytotalData({
         ? console.log("picke other dates Prophet!")
         : setpropsvaluesprophetToFit(resp.data);
 
-
-       
-      // if (resp.data==[]) {return (
-      //   <div className="alert alert-danger" role="alert">
-      //     Danger Alert
-      //   </div>)}
-      // console.log("date datapicker: ", getIntervalDateProphet);
     })
     .then(async () => {
       // Take inicial date

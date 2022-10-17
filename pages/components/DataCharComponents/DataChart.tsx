@@ -37,9 +37,10 @@ ChartJS.register(
 import { Bar, Line, Scatter, Bubble } from "react-chartjs-2";
 import Datapicker from "../Datapicker";
 import condensedataFunction from "../../../utils/condensedata";
-import { getdatabyDateInterval, getdatabyid } from "./scripts/data_db";
-import prohetQuantytotalData from "./scripts/prophetdata/quantytotal";
+import { getdatabyDateInterval, getdatabyid } from "../../../scripts/data_db";
+import prohetQuantytotalData from "../../../scripts/prophetdata/quantytotal";
 import dateConvertFunc from "../../../utils/dateConverter";
+import { eventListeners } from "@popperjs/core";
 // import Chart from 'chart.js/auto';
 
 interface DataGrandeTabela_Quantity {
@@ -55,6 +56,10 @@ interface DataGrandeTabela_Quantity_Prohet {
 yhat_upper:number
   // Order_Date: Date;
   // Quantity: number;
+}
+interface converteedValues {
+  x:string,
+  y:number
 }
 
 // export function dataConversion (date:string){
@@ -213,7 +218,14 @@ const dataDateProExtractObject = dataDatePro.map(value => value.x)
   // const {dataDate:dataDatePro, valuesEspt:valuesEsptPro,dataSet2:dataSetPro} = condensedataFunction(dataExtractXYProphet)
   // const lastDateReferenceForProphetfirst=dataDate.at(0)
   // const lastDateReferenceForProphetlast=dataDate.at(-1)
- 
+  const valuesEsptConverted:{x:string,y:number}[]=valuesEspt.map(value => {
+    const x= dateConvertFunc(value.x);
+    const y=value.y;
+    return {
+     x:x,
+     y:y
+    }
+  })
 
   const concatDates = [...dataDate.map(value => dateConvertFunc(value)), ...dataDateProExtractObject.map(value=>dateConvertFunc(value))];
   let concatDateUniqueArray = concatDates
@@ -229,6 +241,9 @@ const dataDateProExtractObject = dataDatePro.map(value => value.x)
     });
 
 const soreUnicDateconcat = concatDateUniqueArray.sort()
+useEffect(() => {
+  console.log('Data Updated!')
+}, [valuesEsptConverted,dataExtractXYProphet,valuesEspt, propsvaluesprophetFinal])
 
 
 ////////////////////////////////////////////////
@@ -240,10 +255,12 @@ const soreUnicDateconcat = concatDateUniqueArray.sort()
       {
         label: "Original Data",
         // data:[{x: '2012/01/01', y: 1 }, {x:'2012/01/15',y:0.4}, {x:'2012/01/20',y:0.2}],
-        data: valuesEspt,
+        // data: valuesEspt,
+        data: valuesEsptConverted,
         // labels:["January", "February","March", "April", "May", "May"],
         // fill: false,
         borderColor: "rgb(75,192,192)",
+        // cubicInterpolationMode: 'monotone',
         tension: 0.1,
       },
       {
@@ -252,8 +269,9 @@ const soreUnicDateconcat = concatDateUniqueArray.sort()
         // data:[0.1, 0.2, 0.3, 0.4, 0.7, 0.7,0.9,0.10],
         // data: dataSet2,
         data:dataExtractXYProphet,
-
+        // cubicInterpolationMode: 'monotone',
         // fill: false,
+        
         borderColor: "rgb(20,100,150)",
         tension: 0.1,
         // backgoundColor: "rgba(47,97,68, 0.3)",
@@ -261,15 +279,20 @@ const soreUnicDateconcat = concatDateUniqueArray.sort()
       {
         label: "Yhat_lower",
         data:dataExtractXYProphetYhat_lower,
-        borderColor: "rgb(55,55,55,55)",
+        // cubicInterpolationMode: 'monotone',
+        borderColor: "rgb(191, 64, 191)",
+        
         tension:0.1,
 
       },
       {
         label: "Yhat_lower",
         data:dataExtractXYProphetYhat_upper,
-        borderColor: "rgb(100,100,100,100)",
+        borderColor: "rgb(191, 64, 191)",
+        // cubicInterpolationMode: 'monotone',
+        backgroundColor: "rgb(191, 64, 191)",
         tension:0.1,
+        fill: '-1',
 
       },
     ],
@@ -346,7 +369,7 @@ const soreUnicDateconcat = concatDateUniqueArray.sort()
               Atualizar By Id range
             </button>
             <Datapicker setgetIntervalDate={setgetIntervalDate} getIntervalDate={getIntervalDate} />
-
+            
             <button
               type="button"
               className="btn btn-primary btn-lg px-4 gap-3"
@@ -364,9 +387,11 @@ const soreUnicDateconcat = concatDateUniqueArray.sort()
               width={100}
               height={100}
               options={option}
+            //  onClick={(eventListeners)=>{console.log(eventListeners)}}
+              // onClick={()=>{console.log(dataChart.datasets[0].data)}}
             ></Line>
 
-            <input type="range" className="form-range" id="customRange1" />
+            {/* <input type="range" className="form-range" id="customRange1" /> */}
             {/* {props.map((value)=> <div key={value.id}>{value.Quantity}</div>)} */}
             {/* {props.data.map((value:any)=> <div key={value.id}>{value.title}</div>)} */}
           </div>
@@ -377,12 +402,7 @@ const soreUnicDateconcat = concatDateUniqueArray.sort()
             onClick={()=>{prohetQuantytotalData({getIntervalDateProphet,propsvaluesprophetToFit,setpropsvaluesprophet,setpropsvaluesprophetToFit, setpropsvaluesprophetFinal})}}>
               Fit 
             </button>
-            <button
-              type="button"
-              className="btn btn-outline-secondary btn-lg px-4"
-            >
-              Secondary
-            </button>
+
           </div>
         </div>
       </div>
