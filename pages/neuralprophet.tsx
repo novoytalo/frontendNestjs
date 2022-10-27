@@ -1,4 +1,4 @@
-import DataChart from "./components/DataCharComponents/DataChart";
+import DataChartNeural from "./components/DataCharNeuralProphet/DataChartNeural";
 import Layout from "./components/Sidebar";
 export default function Home() {
 
@@ -8,7 +8,7 @@ export default function Home() {
             <Layout />
             
          
-            <DataChart/>
+            <DataChartNeural/>
             
         </div>
     )

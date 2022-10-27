@@ -38,7 +38,7 @@ import { Bar, Line, Scatter, Bubble } from "react-chartjs-2";
 import Datapicker from "../Datapicker";
 import condensedataFunction from "../../../utils/condensedata";
 import { getdatabyDateInterval, getdatabyid } from "../../../scripts/data_db";
-import prohetQuantytotalData from "../../../scripts/prophetdata/quantytotal";
+import prohetQuantytotalData from "../../../scripts/neuroprophetdata/quantytotal";
 import dateConvertFunc from "../../../utils/dateConverter";
 import { eventListeners } from "@popperjs/core";
 // import Chart from 'chart.js/auto';
@@ -347,7 +347,7 @@ useEffect(() => {
       {(dataBuysById==null||dataBuysById==undefined)&&<h2>Server OFF</h2>} */}
       <div className="px-4 py-5 my-5 text-center flex-grow-1">
         <h1 className="display-5 fw-bold">Next.js + Bootstrap 22❤️</h1>
-        <h2 className="display-5 fw-bold">PROPHET</h2>
+        <h2 className="display-5 fw-bold">NEURALPROPHET</h2>
         <div className="col-lg-6 mx-auto">
           <p className="lead mb-4">
             Quickly design and customize responsive mobile-first sites with

@@ -1,0 +1,2 @@
+npm install --dev @types/react
+npm install @types/node
